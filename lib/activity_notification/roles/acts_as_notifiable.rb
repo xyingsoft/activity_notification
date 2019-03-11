@@ -278,14 +278,7 @@ module ActivityNotification
       # @param [Symbol]        tracked_action    Tracked action (:create or :update)
       # @param [Proc]          tracked_proc      Proc or lambda function to execute
       def add_tracked_callback(tracked_callbacks, tracked_action, tracked_proc)
-        if tracked_callbacks.include? tracked_action
-          case tracked_action
-          when :create
-            after_create tracked_proc
-          when :update
-            after_update tracked_proc
-          end
-        end
+        after_commit(tracked_proc, on: tracked_action) if tracked_callbacks.include? tracked_action
       end
 
       # Adds destroy dependency.
